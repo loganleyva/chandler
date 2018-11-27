@@ -7,5 +7,5 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootConfiguration
 @ComponentScan(basePackages = {"com.lleyva.chandler.web"})
-@Import({ServicesConfiguration.class})
+@Import({ServicesConfiguration.class, SecurityConfiguration.class})
 public class WebConfiguration { }

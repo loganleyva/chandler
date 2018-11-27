@@ -7,7 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootConfiguration
-@ComponentScan(basePackages = {"com.lleyva.chandler.data"})
 @PropertySource({"classpath:data.properties", "classpath:postgresql.properties"})
 @EntityScan("com.lleyva.chandler.data")
 @EnableJpaRepositories("com.lleyva.chandler.data.repositories")

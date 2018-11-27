@@ -24,7 +24,7 @@
 		<java.version>1.8</java.version>
 
 		<!-- Dependency Versions -->
-		<spring.version>2.0.2.RELEASE</spring.version>
+		<spring.version>2.1.0.RELEASE</spring.version>
 		<postgres.driver.version>42.2.2</postgres.driver.version>
 
 		<!-- Testing Dependency Versions -->
@@ -121,6 +121,7 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
+						<useSystemClassLoader>false</useSystemClassLoader>
 						<includes>
 							<include>**/*Test.java</include>
 							<include>**/*Tests.java</include>
