@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import test.com.lleyva.chandler.data.config.DataTestConfiguration;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -42,6 +43,7 @@ public class PostsRepositoryTests {
 		String testMessage = RandomStringUtils.randomAlphanumeric(100);
 
 		Post post = new Post();
+		post.setAuthor(UUID.randomUUID());
 		post.setMessage(testMessage);
 
 		// Persist and Verify //
@@ -50,6 +52,10 @@ public class PostsRepositoryTests {
 		Assert.assertEquals(testMessage, post.getMessage());
 
 		Optional<Post> readMessage = postsRepository.findById(post.getId());
+		Assert.assertTrue(readMessage.isPresent());
+		Assert.assertEquals(testMessage, readMessage.get().getMessage());
+
+		readMessage = postsRepository.findByExposedId(post.getExposedId());
 		Assert.assertTrue(readMessage.isPresent());
 		Assert.assertEquals(testMessage, readMessage.get().getMessage());
 	}

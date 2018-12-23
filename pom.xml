@@ -25,6 +25,7 @@
 
 		<!-- Dependency Versions -->
 		<spring.version>2.1.0.RELEASE</spring.version>
+		<jackson.version>2.9.8</jackson.version>
 		<postgres.driver.version>42.2.2</postgres.driver.version>
 
 		<!-- Testing Dependency Versions -->
@@ -63,6 +64,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-security</artifactId>
 				<version>${spring.version}</version>
+			</dependency>
+
+			<!-- Jackson JSON -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 
 			<!-- Postgresql Stuffs -->

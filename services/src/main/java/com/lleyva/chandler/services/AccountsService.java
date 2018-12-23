@@ -5,7 +5,7 @@ import com.lleyva.chandler.data.enums.AccountRole;
 import com.lleyva.chandler.data.repositories.AccountsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -88,15 +88,19 @@ public class AccountsService extends CrudServiceBase<Account> implements UserDet
 
 		Optional<Account> fetchedAccount = accountsRepository.findByEmail(email);
 		if(fetchedAccount.isPresent()) {
-			Account account = fetchedAccount.get();
-
-			return User.withUsername(account.getEmail())
-					.password(account.getHashedPassword())
-					.roles(account.getRole().toString())
-					.build();
+			return fetchedAccount.get();
 		} else {
 			throw new UsernameNotFoundException("No user found with email: " + email);
 		}
+	}
+
+	////////////////////
+	// Public Methods //
+	////////////////////
+
+	public Account getCurrentAccount() {
+		Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return account;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.lleyva.chandler.services;
 
 import com.lleyva.chandler.data.EntityBase;
+import com.lleyva.chandler.data.repositories.RepositoryBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,7 @@ import org.springframework.util.Assert;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import java.util.UUID;
 
 public abstract class CrudServiceBase <Entity extends EntityBase> {
 
@@ -24,7 +26,7 @@ public abstract class CrudServiceBase <Entity extends EntityBase> {
 	////////////////
 
 	@Autowired
-	private CrudRepository<Entity, Long> repository;
+	protected RepositoryBase<Entity> repository;
 
 	/////////////////
 	// Constructor //
@@ -51,6 +53,7 @@ public abstract class CrudServiceBase <Entity extends EntityBase> {
 
 		// Persist and Return //
 		entity.setId(null);
+		entity.setExposedId(UUID.randomUUID());
 		return repository.save(entity);
 	}
 
@@ -69,12 +72,12 @@ public abstract class CrudServiceBase <Entity extends EntityBase> {
 	 * @return
 	 */
 	public Entity read(
-			Long id) {
+			UUID id) {
 		Assert.notNull(id, "id is null");
-		LOGGER.info("READ called for id: " + id);
+		LOGGER.info("READ called for exposedId: " + id);
 
 		// Find and Return //
-		Optional<Entity> entity = repository.findById(id);
+		Optional<Entity> entity = repository.findByExposedId(id);
 		if(entity.isPresent()) {
 			return entity.get();
 		} else {
@@ -89,7 +92,7 @@ public abstract class CrudServiceBase <Entity extends EntityBase> {
 	 * @return
 	 */
 	public Entity update(
-			Long id,
+			UUID id,
 			Entity entity) {
 		Assert.notNull(id, "id is null");
 		Assert.notNull(entity, "entity is null");
@@ -97,7 +100,7 @@ public abstract class CrudServiceBase <Entity extends EntityBase> {
 
 		// Fetch existing Entity with given ID //
 		Entity persistedEntity;
-		Optional<Entity> fetchededEntity = repository.findById(id);
+		Optional<Entity> fetchededEntity = repository.findByExposedId(id);
 		if(fetchededEntity.isPresent() == false) {
 			throw new EntityNotFoundException("Entity not found with id: " + id);
 		} else {
@@ -106,7 +109,7 @@ public abstract class CrudServiceBase <Entity extends EntityBase> {
 
 		// Update the existing Entity //
 		BeanUtils.copyProperties(entity, persistedEntity);
-		persistedEntity.setId(id);
+		persistedEntity.setExposedId(id);
 
 		return repository.save(persistedEntity);
 	}
@@ -116,12 +119,12 @@ public abstract class CrudServiceBase <Entity extends EntityBase> {
 	 * @param id
 	 */
 	public void delete(
-			Long id) {
+			UUID id) {
 		Assert.notNull(id, "id is null");
 		LOGGER.info("DELETE call for id: " + id);
 
 		// Delete the Entity //
-		repository.deleteById(id);
+		repository.deleteByExposedId(id);
 	}
 
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.UUID;
+
 public abstract class ApiV1CrudControllerBase<Entity extends EntityBase> {
 
 	////////////////
@@ -62,7 +64,7 @@ public abstract class ApiV1CrudControllerBase<Entity extends EntityBase> {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Entity read(
-			@PathVariable(value = "id") Long id) {
+			@PathVariable(value = "id") UUID id) {
 		Assert.notNull(id, "id is null");
 		LOGGER.info("GET called on id: "+ id);
 
@@ -77,7 +79,7 @@ public abstract class ApiV1CrudControllerBase<Entity extends EntityBase> {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Entity update(
-			@PathVariable(value = "id") Long id,
+			@PathVariable(value = "id") UUID id,
 			@RequestBody Entity entity) {
 		Assert.notNull(id, "id is null");
 		Assert.notNull(entity, "entity is null");
@@ -92,7 +94,7 @@ public abstract class ApiV1CrudControllerBase<Entity extends EntityBase> {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(
-			@PathVariable(value = "id") Long id) {
+			@PathVariable(value = "id") UUID id) {
 		Assert.notNull(id, "id is null");
 		LOGGER.info("DELETED called on id: " + id);
 
